@@ -26,8 +26,13 @@ function RowPost(props) {
   const handMovieId = (id)=>{
     console.log(id);
     axios.get(`/movie/${id}/videos?api_key=${API_KEY}&language=en-US`).then((resp)=>{
-      console.log(resp.data)
-      seturlId(resp.data.results[0].id)
+      if(resp.data.results !== 0){
+
+        seturlId(resp.data.results[0])
+      }else{
+
+        console.log(resp.data)
+      }
     })
   }
 
@@ -40,7 +45,7 @@ function RowPost(props) {
         <img onClick={()=>handMovieId(movie.id)} className= {props.isSmall ? 'smallPoster' : 'poster'} alt='poster' src={`${ImageUrl+movie.backdrop_path}`}/>
         )}
         </div>
-        <YouTube videoId={urlId} opts={opts} />
+        {urlId&&<YouTube opts={opts} videoId={urlId.key} />}
     </div>
   )
 }
